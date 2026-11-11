@@ -46,7 +46,7 @@ export default async (request) => {
       pair,
       from: String(from),
       to: String(to),
-      resolution: "60",
+      resolution: "15",
       pcode: "f"
     });
 

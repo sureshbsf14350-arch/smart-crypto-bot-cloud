@@ -124,24 +124,41 @@ function signal(c) {
   };
 }
 
+
 async function getData() {
-  const to=Math.floor(Date.now()/1000);
-  const from=to-60*60*24*90;
-  const q=new URLSearchParams({
-    pair:$("pair").value,from,to,resolution:"60",pcode:"f"
+  const to = Math.floor(Date.now() / 1000);
+  const from = to - 15 * 60 * 24 * 90;
+
+  const q = new URLSearchParams({
+    pair: $("pair").value,
+    from,
+    to,
+    resolution: "15",
+    pcode: "f"
   });
 
-  const r=await fetch("/.netlify/functions/candles?"+q.toString(),{cache:"no-store"});
-  if(!r.ok) throw Error("Proxy HTTP "+r.status);
+  const r = await fetch(
+    "/.netlify/functions/candles?" + q.toString(),
+    { cache: "no-store" }
+  );
 
-  const j=await r.json();
-  const a=Array.isArray(j)?j:(j.data||[]);
+  if (!r.ok) throw Error("Proxy HTTP " + r.status);
 
-  return a.map(x=>({
-    open:+x.open,high:+x.high,low:+x.low,
-    close:+x.close,volume:+x.volume,time:+x.time
-  })).filter(x=>x.close>0).sort((a,b)=>a.time-b.time);
+  const j = await r.json();
+  const a = Array.isArray(j) ? j : (j.data || []);
+
+  return a.map(x => ({
+    open: +x.open,
+    high: +x.high,
+    low: +x.low,
+    close: +x.close,
+    volume: +x.volume,
+    time: +x.time
+  }))
+  .filter(x => x.close > 0)
+  .sort((a, b) => a.time - b.time);
 }
+
 
 function dailyLimitAmount() {
   return Math.max(0,Number(st.dayStartBalance)||200)*DAILY_LOSS_LIMIT;
@@ -223,11 +240,11 @@ function managePosition(candle) {
 
 async function refresh() {
   ensureDailyState();
-  log("Loading CoinDCX 1H data...");
+  log("Loading CoinDCX 15M data...");
 
   try {
     candles=await getData();
-    if(candles.length<60) throw Error("Insufficient candle data");
+    if(candles.length<200) Error("Insufficient candle data");
 
     const closed=candles.slice(0,-1);
     const last=closed.at(-1);
@@ -303,7 +320,7 @@ function start() {
   if(ticker) clearInterval(ticker);
   ticker=setInterval(()=>{
     if(document.visibilityState==="visible") refresh();
-  },5*60*1000);
+  },15*60*1000);
 }
 
 $("refresh").onclick=refresh;

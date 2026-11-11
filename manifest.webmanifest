@@ -1,0 +1,10 @@
+{
+  "name": "Smart Crypto Bot",
+  "short_name": "Crypto Bot",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#08111f",
+  "theme_color": "#0d192b",
+  "orientation": "portrait"
+}

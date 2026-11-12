@@ -127,7 +127,7 @@ function signal(c) {
 
 async function getData() {
   const to = Math.floor(Date.now() / 1000);
-  const from = to - 15 * 60 * 24 * 29;
+  const from = to - 60 * 60 * 24 * 29;
 
   const q = new URLSearchParams({
     pair: $("pair").value,

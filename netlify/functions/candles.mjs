@@ -30,7 +30,7 @@ export default async (request) => {
     if (
       !Number.isFinite(from) ||
       from >= to ||
-      to - 60 * 60 * 24 * 30
+      from < to - 60 * 60 * 24 * 30
     ) {
       return Response.json(
         { error: "Invalid date range" },

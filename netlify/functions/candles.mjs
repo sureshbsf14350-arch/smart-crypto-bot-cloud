@@ -25,7 +25,7 @@ export default async (request) => {
       now
     );
     const from = Number(url.searchParams.get("from")) ||
-      to - 60 * 60 * 24 * 30;
+      to - 60 * 60 * 24 * 7;
 
     if (
       !Number.isFinite(from) ||
